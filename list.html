@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<style>
+    body {
+    /* margin: 0;
+    padding: 0; */
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url("./background.JFIF");
+    background-size: cover;
+    object-fit: contain;
+    overflow-x: hidden;
+    
+    font-variant-caps:petite-caps;
+  }
+  .topnav {
+    overflow: hidden;
+    background-color: rgb(21, 142, 212);
+  }
+  
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  .topnav a:hover {
+    background-color: rgb(25, 247, 247);
+    color: black;
+  }
+  
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  h1,h3{
+      text-align: center;
+  }
+ 
+  #heading{
+      margin: 15px;
+    height: 100px;
+    border-image: round;
+    
+    background-image: url("./heading.jpg");
+    /* background-position: ; */
+    background-size: cover;
+    object-fit: contain;
+    max-height: 100%;
+    color: cornsilk;
+    background-repeat: no-repeat;
+    text-transform: capitalize;
+        text-decoration: solid;
+        font-variant-caps: all-petite-caps;
+  }
+    .table-bordered{
+        border: orangered 2px ;
+    }
+    th{
+        font-size: 22px;
+        text-transform: capitalize;
+        text-decoration: solid;
+        font-variant-caps:all-petite-caps;
+        border: darkslateblue 4px;
+        border-style: double;
+        color: yellow;
+        background-color: darkcyan;
+    }
+    input{
+        /* background-color: #fff; */
+        outline:4px solid rgb(59, 182, 240);
+        height: 18px;
+        width: 20px;
+         border: 13px solid red;
+        border-radius: 16px;
+      background-color: rgb(196, 26, 26);
+        margin-left: 15px;
+        padding-left: 17em;
+       
+    }
+    
+    input[type="checkbox"]:hover{
+        background-color: seagreen;
+    }
+    #tableList tr:nth-child(even){background-color: #7ef1bc86}
+#tableList tr:hover {background-color: rgb(231, 247, 164);}
+</style>
+</head>
+<body>
+    <div class="topnav">
+        <!-- <a class="navbar-brand">Javascript To do list</a> -->
+        <a href="#"id="get">Todo List</a>
+        <a href="login.html">Logout</a>
+        <!-- <a href="#about">About</a> -->
+      </div>
+
+    
+    <div id="heading">
+        <h1 id="title">Welcome !!!!</h1>
+        <h3 class="title">Please Click the ToDo List menu and mark the completed task</h3>                
+    </div>
+    <div class="container" id="tablecontainer">
+        <div class="table-responsive">            
+            <table class="table table-bordered table-striped" id="tableList">
+                       
+            </table>        
+        </div>    
+       </div> 
+    <script>
+        
+    var count=0;
+    $("document").ready(function(){
+        $("#get").click(()=>{
+            $.get("https://jsonplaceholder.typicode.com/todos",(res,status,xhr)=>{
+                if(status=="success"){
+                    var response=JSON.parse(xhr.responseText);
+                    var output="";
+                    output +="<tr>";
+                        output +="<th> Check</th>";
+                    output +="<th> user Id</th>";
+                    output +="<th> id </th>";
+                    output +="<th> Title</th>";
+                    output +="<th> Completed</th>";
+                    output +="</tr>";
+                    for(var i=0;i<res.length;i++){
+                        output +="<tr>";
+                output+="<td> "+"<input type=\"checkbox\">"+"</td>";
+                output +="<td> "+ response[i].userId +"</td>";
+                output +="<td> "+ response[i].id+"</td>";
+                output +="<td> "+ response[i].title +"</td>";
+                output +="<td> "+ response[i].completed +"</td>";
+                output +="</tr>";
+                        // output+="&nbsp &nbsp &nbsp &nbsp &nbsp<input type=\"checkbox\">"+" &nbsp &nbsp  ";
+                        // output+=response[i].title +"<br>";
+                    // console.log("response "+response[i].title);
+                    }
+                    $("#tableList").html(output);   
+                    table = document.getElementById("tableList");
+                    
+
+                     var tr1 = table.getElementsByTagName("tr");  
+
+                     for (i = 1; i < tr1.length; i++) {
+                    var td1 = tr1[i].getElementsByTagName("td")[4];  
+                    if(td1.innerHTML=="true"||td1.innerText=="true"){
+                        console.log("entered true");
+                       var inputs= document.getElementsByTagName("input");
+                        // var inputs=document.querySelectorAll('input[type="checkbox"]');
+                        // for (var i = 0; i < inputs.length; i++) {
+                         console.log("entered loop"+inputs.length);
+                         inputs[i-1].disabled = true;
+                        //  inputs[i-1].checked=true;
+                        // }
+                    }
+                    // if(td.innerHTML=="true"||td.innerText=="true"){
+                    //     console.log("entered");
+                    //     var inputs=document.querySelectorAll('input[type="checkbox"]');
+                    //     for (var i = 0; i < inputs.length; i++) {
+                    //         console.log("entered loop");
+                    //      inputs[i].disabled = true;
+                    //     }
+                    // }
+                   
+                    // console.log("checkbox"+checkb);
+                     }      
+                }
+            })
+        });
+    });
+$("#tableList").click((e)=>{
+    console.log("element"+e.target.type);
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+    var promise=new Promise(function(resolve,reject){
+        setTimeout(function(){
+            if(checkboxes.length==5)
+            resolve();
+            
+            
+        },1000);
+    });
+
+promise.then(getpost);
+
+function getpost(){
+    alert("Congrats you have completed 5 tasks");
+    for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].disabled= true;
+             }
+         }
+}
+});
+
+
+
+    </script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    
+</body>
+</html>
